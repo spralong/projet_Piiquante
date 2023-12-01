@@ -72,8 +72,8 @@ exports.modifySauce = (req, res, next) => {
 
 exports.likeSauce = (req, res) => {
     Sauce.findOne({_id: req.params.id})
-    .then((Sauce) => {
-        if ((!Sauce.usersLiked.includes(req.body.userId) && (!Sauce.usersDisliked.includes(req.auth.userId)) && (req.body.like === 1))){
+    .then((sauce) => {
+        if ((!sauce.usersLiked.includes(req.body.userId)) && (req.body.like === 1)){
             Sauce.updateOne(
                 {_id : req.params.id},
                 {
@@ -84,7 +84,7 @@ exports.likeSauce = (req, res) => {
             .then(() => res.status(200).json({message: 'Like !'}))
             .catch(error => res.status(400).json({ error }));
         } 
-        if ((!Sauce.usersLiked.includes(req.body.userId) && (!Sauce.usersDisliked.includes(req.auth.userId)) && (req.body.like === -1))){
+        if ((!sauce.usersDisliked.includes(req.body.userId)) && (req.body.like === -1)){
             Sauce.updateOne(
                 {_id : req.params.id},
                 {
@@ -95,23 +95,23 @@ exports.likeSauce = (req, res) => {
             .then(() => res.status(200).json({message: 'Dislike !'}))
             .catch(error => res.status(400).json({ error }));
         } 
-        else if (Sauce.usersLiked.includes(req.body.userId) && (req.body.like === 0)) {
+        else if (sauce.usersLiked.includes(req.body.userId) && (req.body.like === 0)) {
             Sauce.updateOne(
                 {_id : req.params.id},
                 {
                     $inc: {likes: -1},
-                    $splice: {usersLiked: req.body.userId}
+                    $pull: {usersLiked: req.body.userId}
                 }
             )
             .then(() => res.status(200).json({message: 'Annule like !'}))
             .catch(error => res.status(400).json({ error }));
         }
-        else if (Sauce.usersDisliked.includes(req.body.userId) && (req.body.like === 0)) {
+        else if (sauce.usersDisliked.includes(req.body.userId) && (req.body.like === 0)) {
             Sauce.updateOne(
                 {_id : req.params.id},
                 {
                     $inc: {dislikes: -1},
-                    $splice: {usersDisliked: req.body.userId}
+                    $pull: {usersDisliked: req.body.userId}
                 }
             )
             .then(() => res.status(200).json({message: 'Annule Dislike !'}))
