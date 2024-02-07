@@ -10,11 +10,10 @@ const helmet = require('helmet');
 const userRoutes = require('./routes/user');
 const sauceRoutes = require('./routes/sauce');
 
-mongoose.connect(`mongodb+srv://sebastienpralong:didier12@cluster0$.ykis5ck.mongodb.net/?retryWrites=true&w=majority&appName=AtlasApp`,
-// mongoose.connect(`mongodb+srv://${process.env.IDENTIFIANT}:${process.env.MDP}@${process.env.MY_BASE}/?retryWrites=true&w=majority&appName=AtlasApp`,
+mongoose.connect(`mongodb+srv://${process.env.IDENTIFIANT}:${process.env.MDP}@${process.env.MY_BASE}/?retryWrites=true&w=majority&appName=AtlasApp`,
   )
   .then(() => console.log('connexion réussie '))
-  .catch(() => console.log('Connexion à MongoDB échouée !'));
+  .catch(() => console.log(`connexion echouée`));
 
 const app = express();
 
